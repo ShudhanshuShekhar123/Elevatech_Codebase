@@ -1,18 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
-import { Sidebar } from '../components/Sidebar'
-import { useSelector, useDispatch } from 'react-redux'
-import { RootState } from '../redux/store'
 import axios from 'axios'
-import { fetcFailureAction, fetchRequestAction, fetchSuccessAction } from '../redux/action'
-import { Productcard } from '../components/Productcard'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 import Footer from '../components/Footer'
+import { Productcard } from '../components/Productcard'
+import { Sidebar } from '../components/Sidebar'
+import { fetcFailureAction, fetchRequestAction, fetchSuccessAction } from '../redux/action'
+import { RootState } from '../redux/store'
 
 interface SearchParamsType {
   category: string[],
   color: string[],
+  brand:string[],
   _sort: string | null,
   _order: string | null
 }
@@ -28,46 +29,57 @@ export const Product = () => {
   const dispatch = useDispatch()
   const [page, setPage] = useState<number>(1)
 
- 
+ console.log(searchparams.getAll("order"),"oreder")
+
+
 
  
   let params = {
     category: searchparams.getAll("category"),
     color: searchparams.getAll("color"),
     brand: searchparams.getAll("brand"),
-    _sort: searchparams.get("order") && "price",
-    _order: searchparams.get("order")
+    _sort: searchparams.get("order")  && "price" ,
+    _order:  searchparams.get("order")
   }
   
+  // console.log(params,"here in params")
 
 
-  const getProductData = (page: number, params: SearchParamsType) => {
+  const getProductData = (page:number, params: SearchParamsType) => {
+    console.log("before fetch request")
+    // let isMounted = true;
     dispatch(fetchRequestAction())
-    axios.get(`https://shy-puce-binturong-ring.cyclic.app/electronics?_page=${page}&_limit=13`, { params })
+    console.log("after fetch request")
+    axios.get(`https://elevatech.onrender.com/electronics?_page=${page}&_limit=13`, { params })
       .then((res) => {
-        dispatch(fetchSuccessAction(res.data))
-
-
-
-        
+        // if(isMounted){
+          dispatch(fetchSuccessAction(res.data))
+        // }  
         console.log(res.data)
       })
       .catch((error) => {
         dispatch(fetcFailureAction())
         console.log(error)
       })
+
+      
+    // return () => {
+    //   isMounted = false;
+    // };
   }
 
   useEffect(() => {
+   
     getProductData(page, params)
 
-  }, [page, searchparams])
+
+  }, [ page,searchparams])
 
 
 
   return (
 
-      isLoading ? 
+      isLoading && !searchparams.get("order") ? 
         <div  style={{ margin:"auto", width:"fit-content"}}>
       <img src="https://i0.wp.com/static.onemansblog.com/wp-content/uploads/2016/05/clock-loading.gif" alt="loading_img" /> 
       

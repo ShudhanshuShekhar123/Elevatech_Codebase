@@ -18,9 +18,10 @@ export const Sidebar = () => {
     let initialbrand = searchparams.getAll("brand")
     const [category, setCategory] = useState(initialcategory || [])
     const [color, setColor] = useState(initialcolor || [])
-    const [order, setorder] = useState("")
+    const [order, setorder] = useState(  "")
     const [brand, setBrand] = useState(initialbrand || [])
 
+    console.log("sidebar....")
 
 
     useEffect(() => {
@@ -32,7 +33,9 @@ export const Sidebar = () => {
 
         if (order) {
             obj2 = {
-                order
+                order:order ,
+                
+
             }
         }
 
@@ -43,11 +46,13 @@ export const Sidebar = () => {
             ...obj2
 
         }
+        console.log("hello")
+        
         setSearchparams(params)
 
 
-    }, [category, color, order, brand, setSearchparams])
-   
+    }, [category, color, order, brand])
+
 
     const handlechangecategory = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -80,7 +85,7 @@ export const Sidebar = () => {
 
 
     }
-  
+
 
     const handlechangecolor = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target
@@ -104,6 +109,7 @@ export const Sidebar = () => {
 
 
     }
+   
 
     // console.log(order, " in order of sidebar")
 

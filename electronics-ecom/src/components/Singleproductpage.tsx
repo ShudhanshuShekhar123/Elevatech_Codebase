@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { RootState } from '../redux/store'
 import styled from 'styled-components'
-import Starrating from './Starrating'
-import { addproductaction } from '../redux/action'
 import Swal from 'sweetalert2'
+import { addproductaction } from '../redux/action'
+import { RootState } from '../redux/store'
+import Starrating from './Starrating'
 
 interface ItemTpe {
     image: string[];
@@ -31,7 +31,7 @@ const Singleproductpage = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        fetch(`https://shy-puce-binturong-ring.cyclic.app/electronics/${user_id}`)
+        fetch(`https://elevatech.onrender.com/electronics/${user_id}`)
             .then((res) => {
                 return res.json()
             })

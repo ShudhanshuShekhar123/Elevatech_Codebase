@@ -17,8 +17,8 @@ const Payment = () => {
 
   const handleplaceorder = () => {
     Swal.fire(
-      'Good job!',
-      'Product Added to cart',
+      'Congrats!',
+      'Order placed Successfully!!',
       'success'
     )
     dispatch(clearcartaction())

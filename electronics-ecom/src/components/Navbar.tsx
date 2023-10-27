@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // import React,{useState} from 'react'
-import logo from "../Images/elevateTechLogo.png"
-import { styled } from 'styled-components'
-import { useNavigate, Link } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { styled } from 'styled-components';
+import logo from "../Images/elevateTechLogo.png";
 
 
-import {auth} from "../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { auth } from "../firebase";
 import { userLoggedIn, userLoggedOut } from "../redux/action";
 import { RootState } from "../redux/store";
 
@@ -29,58 +29,58 @@ export const Navbar = () => {
 
   const cartItem = useSelector((store: RootState) => store.cartReducer.cartproduct)
 
-const [userNameFirstLetter, setUserNameFirstLetter]  = useState('')
+  const [userNameFirstLetter, setUserNameFirstLetter] = useState('')
   const dispatch = useDispatch()
-  const isAuth = useSelector((store : RootState )=> store.authReducer.isAuth)
+  const isAuth = useSelector((store: RootState) => store.authReducer.isAuth)
 
-  useEffect(()=> {
-        const listen = onAuthStateChanged(auth, (user )=> {
-            if(user && user.email){
-                setUserNameFirstLetter(user.email[0])
-                dispatch(userLoggedIn())
-            }
-        })
-        return () => {
-            listen()
-        }
-    },[])
-
-     const logOut = () => {
-         Swal.fire({
-             title: 'Are you sure?',
-             text: "You want to log out!",
-             icon: 'warning',
-            showCancelButton: true,
-             confirmButtonColor: '#3085d6',
-             cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, log out!'
-            }).then((result) => {
-        if (result.isConfirmed) {
-            signOut(auth).then(()=> {
-            dispatch(userLoggedOut())
-            Swal.fire(
-                'Logged Out!',
-                 'You have been logged out!',
-                     'success'
-                    )
-        })
-  }
-  
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user && user.email) {
+        setUserNameFirstLetter(user.email[0])
+        dispatch(userLoggedIn())
+      }
     })
-     
-    } 
+    return () => {
+      listen()
+    }
+  }, [])
+
+  const logOut = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to log out!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        signOut(auth).then(() => {
+          dispatch(userLoggedOut())
+          Swal.fire(
+            'Logged Out!',
+            'You have been logged out!',
+            'success'
+          )
+        })
+      }
+
+    })
+
+  }
 
 
 
   useEffect(() => {
-    fetch(`https://shy-puce-binturong-ring.cyclic.app/electronics?q=${query}`)
+    fetch(`https://elevatech.onrender.com/electronics?q=${query}`)
       .then((res) => res.json())
       .then((res) => {
         // console.log(res)
         setData(res)
       })
 
-      console.log(isAuth)
+    console.log(isAuth)
   }, [query])
 
   console.log(data, "here datas")
@@ -122,18 +122,12 @@ const [userNameFirstLetter, setUserNameFirstLetter]  = useState('')
           }
 
         </div>
-        <Link style={{ textDecoration: "none", color : "black" }} to="/products"><h3>Products</h3></Link>
+        <Link style={{ textDecoration: "none", color: "black" }} to="/products"><h3>Products</h3></Link>
         <h3>About us</h3>
-
-
-      
-
-      
-
-          {isAuth? <div className="logOutDiv"><h2 className="logOutText">{userNameFirstLetter.toUpperCase()}</h2><button className="button-37" onClick={logOut} >Log Out</button></div> :
-        <Link style={{ textDecoration: "none", color : "black" }} to="/login"><h3>Login<i className="fa-solid fa-user"></i></h3></Link>
-          } 
-        <Link style={{ textDecoration: "none" }} to="/products/cart"> <span style={{fontWeight:"600", position:"absolute",top:"14px",right:"70px"}}>{cartItem.length > 0 ? cartItem.length : null}</span><h3>Cart <i className="fa-solid fa-cart-shopping"></i></h3></Link>
+        {isAuth ? <div className="logOutDiv"><h2 className="logOutText">{userNameFirstLetter.toUpperCase()}</h2><button className="button-37" onClick={logOut} >Log Out</button></div> :
+          <Link style={{ textDecoration: "none", color: "black" }} to="/login"><h3>Login<i className="fa-solid fa-user"></i></h3></Link>
+        }
+        <Link style={{ textDecoration: "none",color:"black" }} to="/products/cart"> <span style={{ fontWeight: "600", position: "absolute", top: "14px", right: "70px" }}>{cartItem.length > 0 ? cartItem.length : null}</span><h3>Cart <i className="fa-solid fa-cart-shopping"></i></h3></Link>
 
       </div>
     </DIV>
